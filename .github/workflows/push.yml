@@ -1,4 +1,5 @@
 name: docker-compose-actions-workflow
+
 on:
   workflow_dispatch:
   push:
@@ -16,7 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      # Install docker-compose
       - name: Install docker-compose
         run: sudo apt-get -y install docker-compose
+
+      # Build the Docker stack
       - name: Build the stack
         run: docker-compose build
+
+      # Log in to Cloudsmith Docker registry
+      - name: Log in to Cloudsmith Docker registry
+        run: echo "${{ secrets.CLOUDSMITH_API_KEY }}" | docker login docker.cloudsmith.io -u al-west --password-stdin
+
+      # Push the Docker images
+      - name: Push Docker images
+        run: docker-compose push
+
