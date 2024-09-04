@@ -16,5 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install docker-compose
+        run: apt-get -y install docker-compose
       - name: Build the stack
         run: docker-compose build
